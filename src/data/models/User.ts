@@ -10,8 +10,10 @@ import {
   VirtualColumn,
   AfterLoad,
   BeforeUpdate,
+  JoinColumn,
 } from 'typeorm';
 import { compare, hash } from 'bcrypt';
+import { Post } from './Post';
 
 @Entity({ name: 'User' })
 export class User {
@@ -35,10 +37,19 @@ export class User {
   email: string;
 
   @Column('varchar', {
+    name: 'bio',
+    nullable: true,
+  })
+  bio: string;
+
+  @Column('varchar', {
     name: 'avatar',
     nullable: true,
   })
   avatar?: string;
+
+  @OneToMany(() => Post, (post) => post.user)
+  posts: Post[];
 
   @CreateDateColumn({
     name: 'created_at',

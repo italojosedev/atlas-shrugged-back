@@ -4,7 +4,7 @@ import 'express-async-errors';
 import cors from 'cors';
 import { dataSource } from '@config/dataSource';
 
-import Routes from '@routes';
+import Routes from '@infra/routes';
 
 // import Socket from './socket';
 

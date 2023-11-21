@@ -7,12 +7,12 @@ import {
   UpdateDateColumn,
   ManyToMany,
   OneToMany,
+  JoinColumn,
 } from 'typeorm';
+import { User } from './User';
 
-import { Product } from './index';
-
-@Entity({ name: 'Brand' })
-export class Brand {
+@Entity({ name: 'Post' })
+export class Post {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
@@ -28,8 +28,13 @@ export class Brand {
   })
   isActived: boolean;
 
-  @OneToMany(() => Product, (product) => product.brand)
-  products: Product[];
+  @Column('integer')
+  userId: number;
+  @OneToMany(() => User, (user) => user.posts)
+  @JoinColumn({
+    name: 'userId',
+  })
+  user: User;
 
   @CreateDateColumn({
     name: 'created_at',

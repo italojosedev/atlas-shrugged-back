@@ -1,6 +1,5 @@
-import { FindOneOptions, FindOptionsWhere, ILike, QueryRunner } from 'typeorm';
-import { User } from '@models';
-import { IUserStore } from '@interfaces';
+import { FindOptionsWhere, ILike, QueryRunner } from 'typeorm';
+import { User } from '@data/models';
 import { dataSource } from '@config/dataSource';
 
 class UserRepository {
@@ -12,13 +11,10 @@ class UserRepository {
     return qr;
   };
 
-  async list(
-    organizationId: number,
-    page: number,
-    itemsPerPage: number,
-    filters?: {
-      name?: string;
-    }
+  async search(
+    name: string,
+    page: number = 0,
+    itemsPerPage: number = 10
   ): Promise<{
     rows: User[];
     total: number;
@@ -26,18 +22,11 @@ class UserRepository {
     const queryRunner: QueryRunner = dataSource.createQueryRunner();
 
     await queryRunner.connect();
-    const where: FindOptionsWhere<User> = {};
-
-    if (filters?.name) where.fullName = ILike(filters.name);
 
     try {
       const [rows, total] = await queryRunner.manager.findAndCount(User, {
         where: {
-          organization: organizationId,
-          ...where,
-        },
-        order: {
-          createdAt: 'ASC',
+          fullName: ILike(`%${name}%`),
         },
         take: +itemsPerPage,
         skip: +page * +itemsPerPage,
@@ -48,7 +37,7 @@ class UserRepository {
         rows,
       };
     } catch (error) {
-      console.log('UserRepository list error', error);
+      console.log('UserRepository search error', error);
       throw error;
     } finally {
       await queryRunner.release();
@@ -90,7 +79,7 @@ class UserRepository {
     }
   }
 
-  async store(body: IUserStore): Promise<User> {
+  async store(body: any): Promise<User> {
     const queryRunner: QueryRunner = dataSource.createQueryRunner();
 
     await queryRunner.connect();
@@ -99,7 +88,6 @@ class UserRepository {
     try {
       const user: User = await queryRunner.manager.create(User, {
         ...body,
-        organization: body.organization,
       });
 
       await queryRunner.manager.save(user);
@@ -117,33 +105,13 @@ class UserRepository {
     }
   }
 
-  async findOne(query: object) {
+  async findOne(userId: number) {
     const user = await dataSource.manager.findOne(User, {
-      where: query,
+      where: {
+        id: userId,
+      },
     });
     return user;
-  }
-
-  async findOneById(id: number) {
-    const queryRunner: QueryRunner = dataSource.createQueryRunner();
-
-    await queryRunner.connect();
-
-    try {
-      const user = await queryRunner.manager.findOne(User, {
-        where: {
-          id,
-        },
-        relations: this.relations,
-      });
-
-      return user;
-    } catch (error) {
-      console.log('UserRepository findOneById error', error);
-      throw error;
-    } finally {
-      await queryRunner.release();
-    }
   }
 
   async signIn(email: string, password: string): Promise<number | null> {
@@ -165,7 +133,7 @@ class UserRepository {
     // @ts-ignore
     const user: User = await queryRunner.manager.findOneOrFail(User, {
       where,
-      select: ['id', 'fullName', 'code', 'email', 'password'],
+      select: ['id', 'fullName', 'email', 'password'],
     });
 
     await queryRunner.release();

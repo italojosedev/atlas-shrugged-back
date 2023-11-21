@@ -1,9 +1,7 @@
 import * as Yup from 'yup';
-import { IUserStore, IUserLogin } from '@interfaces';
-import { User } from '../models/User';
 
 class UserValidator {
-  async store(obj: object): Promise<Partial<IUserStore>> {
+  async store(obj: object): Promise<Partial<any>> {
     const schema = Yup.object().shape({
       fullName: Yup.string().required(),
       password: Yup.string().required(),
@@ -13,7 +11,7 @@ class UserValidator {
     return schema.validate(obj);
   }
 
-  async edit(obj: object): Promise<Partial<User>> {
+  async edit(obj: object): Promise<Partial<any>> {
     const schema = Yup.object().shape({
       fullName: Yup.string(),
       email: Yup.string().email(),
@@ -24,7 +22,7 @@ class UserValidator {
     return schema.validate(obj);
   }
 
-  async signIn(obj: IUserLogin): Promise<Partial<IUserLogin>> {
+  async signIn(obj: any): Promise<Partial<any>> {
     const schema = Yup.object().shape({
       email: Yup.string().email().required(),
       password: Yup.string().required(),

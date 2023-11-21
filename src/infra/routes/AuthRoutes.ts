@@ -1,5 +1,6 @@
 import { Router } from 'express';
-import { AuthMiddleware } from '@middlewares';
+
+import { AuthController } from '@data/controllers';
 
 class UserRoutes {
   public router: Router;
@@ -9,8 +10,8 @@ class UserRoutes {
   }
 
   getRoutes() {
-    this.router.route('/signin').post(UserController.signIn);
-    this.router.route('/forgot').post(UserController.forgotPassword);
+    this.router.route('/signin').post(AuthController.signIn);
+    this.router.route('/signup').post(AuthController.signUp);
 
     return this.router;
   }

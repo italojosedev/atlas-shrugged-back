@@ -18,24 +18,12 @@
     "baseUrl": ".",
     "allowSyntheticDefaultImports": true,
     "paths": {
-      "@data": ["./src/data"],
-      "@domain": ["./src/domain"],
-      "@infra": ["./src/infra"],
-      "@organization": ["./src/app/controllers/organization"],
+      "@data/*": ["./src/data/*"],
+      "@domain/*": ["./src/domain/*"],
+      "@infra/*": ["./src/infra/*"],
       "@config/*": ["./src/config/*"]
     }
   },
-  "include": [
-    "./src/**/*",
-    "./src/**/**/*",
-    "server/socket.ts",
-    "server/server.ts",
-    "server/routes",
-    "server/routes/*",
-    "server/routes/**/*",
-    "server/socket.ts",
-    "server/server.ts",
-    "server/index.ts"
-  ],
+  "include": ["./src/**/*", "./src/**/**/*"],
   "exclude": ["./dist"]
 }
