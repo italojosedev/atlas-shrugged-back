@@ -1,3 +1,3 @@
-import Token from './Token';
+import Auth from './Auth';
 
-export { Token };
+export { Auth };

@@ -20,10 +20,15 @@ class UserRoutes {
 
     this.router
       .route('/users/profile')
-      .get(AuthMiddleware.user, UserController.showProfile);
+      .get(AuthMiddleware.user, UserController.showProfile)
+      .put(AuthMiddleware.user, UserController.updateProfile);
     this.router
       .route('/users/profile/avatar')
-      .put(AuthMiddleware.user, this.multer.single('avatar'));
+      .put(
+        AuthMiddleware.user,
+        this.multer.single('avatar'),
+        UserController.updateProfileAvatar
+      );
 
     this.router
       .route('/users/:userId/posts')

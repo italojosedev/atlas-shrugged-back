@@ -52,6 +52,38 @@ class AuthController {
       });
     }
   }
+
+  async updateProfile(req: Request, res: Response): Promise<any> {
+    try {
+      console.log('AuthController updateProfile');
+      const userId = req.auth.id;
+
+      const body = await UserValidator.edit(req.body);
+
+      const user = await UserRepository.edit(body, userId);
+
+      return res.json(user);
+    } catch (err) {
+      return res.status(500).json({
+        message: err.message,
+      });
+    }
+  }
+
+  async updateProfileAvatar(req: Request, res: Response): Promise<any> {
+    try {
+      console.log('AuthController updateProfileAvatar');
+      const userId = req.auth.id;
+      const avatar = req.file.filename;
+      const user = await UserRepository.editAvatar(avatar, userId);
+
+      return res.json(user);
+    } catch (err) {
+      return res.status(500).json({
+        message: err.message,
+      });
+    }
+  }
 }
 
 export default new AuthController();

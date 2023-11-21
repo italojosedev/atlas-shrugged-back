@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { EntityNotFoundError } from 'typeorm';
 import * as Yup from 'yup';
-import { Token } from '@infra/utils';
 import { UserRepository } from '@infra/repositories';
 
 import { Socket } from 'socket.io';
@@ -65,14 +64,14 @@ class AuthMiddleware {
         return next(new Error('Token invalid'));
       }
 
-      const user = Token.decode(token);
+      const user = Auth.verify(token);
 
       if (!user) {
         return next(new Error('Token invalid'));
       }
-
-      if (user.class !== 'user') return next(new Error('Token invalid'));
-
+      /** @ts-ignore */
+      if (user?.class !== 'user') return next(new Error('Token invalid'));
+      /** @ts-ignore */
       const userData = await UserRepository.findOne(user.id);
 
       socket.data.user = userData;
