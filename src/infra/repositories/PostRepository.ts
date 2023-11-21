@@ -48,6 +48,7 @@ class PostRepository {
       await queryRunner.release();
     }
   }
+
   async update(
     postId: number,
     body: Partial<IPostUpdate>

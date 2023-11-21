@@ -13,7 +13,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { compare, hash } from 'bcrypt';
-import { Post } from './Post';
+import { Follow, Post } from './index';
 
 @Entity({ name: 'User' })
 export class User {
@@ -47,6 +47,11 @@ export class User {
     nullable: true,
   })
   avatar?: string;
+
+  @OneToMany(() => Follow, (post) => post.follower)
+  followers: Follow[];
+  @OneToMany(() => Follow, (post) => post.followed)
+  followeds: Follow[];
 
   @OneToMany(() => Post, (post) => post.user)
   posts: Post[];
