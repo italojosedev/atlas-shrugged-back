@@ -38,6 +38,20 @@ class AuthController {
       });
     }
   }
+  async showProfile(req: Request, res: Response): Promise<any> {
+    try {
+      console.log('AuthController showProfile');
+      const userId = req.auth.id;
+
+      const user = await UserRepository.findOne(+userId);
+
+      return res.json(user);
+    } catch (err) {
+      return res.status(500).json({
+        message: err.message,
+      });
+    }
+  }
 }
 
 export default new AuthController();

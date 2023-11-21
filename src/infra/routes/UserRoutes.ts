@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { UserController } from '@data/controllers';
+import { PostController, UserController } from '@data/controllers';
 import { AuthMiddleware } from '@data/middlewares';
 import multer, { Multer } from 'multer';
 import { storage } from '@config/upload';
@@ -19,8 +19,15 @@ class UserRoutes {
     this.router.route('/users');
 
     this.router
+      .route('/users/profile')
+      .get(AuthMiddleware.user, UserController.showProfile);
+    this.router
       .route('/users/profile/avatar')
       .put(AuthMiddleware.user, this.multer.single('avatar'));
+
+    this.router
+      .route('/users/:userId/posts')
+      .get(AuthMiddleware.user, PostController.listByUserId);
 
     return this.router;
   }
