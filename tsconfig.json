@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "commonjs",
+    "lib": ["es6"],
+    "allowJs": true,
+    "outDir": "./dist",
+    "rootDir": ".",
+    "removeComments": false,
+    "typeRoots": ["./node_modules/@types", "./src/@types"],
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "Node",
+    "baseUrl": ".",
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@data": ["./src/data"],
+      "@domain": ["./src/domain"],
+      "@infra": ["./src/infra"],
+      "@organization": ["./src/app/controllers/organization"],
+      "@config/*": ["./src/config/*"]
+    }
+  },
+  "include": [
+    "./src/**/*",
+    "./src/**/**/*",
+    "server/socket.ts",
+    "server/server.ts",
+    "server/routes",
+    "server/routes/*",
+    "server/routes/**/*",
+    "server/socket.ts",
+    "server/server.ts",
+    "server/index.ts"
+  ],
+  "exclude": ["./dist"]
+}
