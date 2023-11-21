@@ -17,9 +17,10 @@ export class Post {
   id: number;
 
   @Column('varchar', {
-    name: 'name',
+    name: 'content',
+    default: '',
   })
-  name: string;
+  content: string;
 
   @Column('boolean', {
     name: 'isActived',

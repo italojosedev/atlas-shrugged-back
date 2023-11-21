@@ -5,6 +5,7 @@ import { Token } from '@infra/utils';
 import { UserRepository } from '@infra/repositories';
 
 import { Socket } from 'socket.io';
+import Auth from '@infra/utils/Auth';
 
 class AuthMiddleware {
   async user(
@@ -24,8 +25,8 @@ class AuthMiddleware {
       if (bearer !== 'Bearer')
         return res.status(401).json({ message: 'Token mal-formatted' });
 
-      const tokenPayload = Token.decode(token);
-
+      const tokenPayload = await Auth.verify(token);
+      console.log(tokenPayload);
       if (tokenPayload.class !== 'user')
         return res.status(401).json({ message: 'Invalid token' });
 

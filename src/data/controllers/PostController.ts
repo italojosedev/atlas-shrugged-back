@@ -11,7 +11,7 @@ class PostController {
 
       const post = await PostRepository.store({
         ...body,
-        userId: req.auth.userId,
+        userId: req.auth.id,
       });
 
       return res.json(post);
