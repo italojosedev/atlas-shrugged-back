@@ -13,7 +13,8 @@ class PostRoutes {
     this.router.route('/posts').post(AuthMiddleware.user, PostController.store);
     this.router
       .route('/posts/:postId')
-      .put(AuthMiddleware.user, PostController.store);
+      .put(AuthMiddleware.user, PostController.store)
+      .get(AuthMiddleware.user, PostController.show);
 
     return this.router;
   }

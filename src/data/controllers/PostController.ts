@@ -37,6 +37,34 @@ class PostController {
       });
     }
   }
+  async show(req: Request, res: Response): Promise<any> {
+    try {
+      console.log('PostController show');
+      const postId = req.params.postId;
+
+      const post = await PostRepository.getById(+postId);
+
+      return res.json(post);
+    } catch (err) {
+      return res.status(500).json({
+        message: err.message,
+      });
+    }
+  }
+  async listByUserId(req: Request, res: Response): Promise<any> {
+    try {
+      console.log('PostController listByUserId');
+      const userId = req.params.userId;
+
+      const posts = await PostRepository.listByUserId(+userId);
+
+      return res.json(posts);
+    } catch (err) {
+      return res.status(500).json({
+        message: err.message,
+      });
+    }
+  }
 }
 
 export default new PostController();

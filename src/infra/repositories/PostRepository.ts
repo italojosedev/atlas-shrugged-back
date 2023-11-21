@@ -103,6 +103,56 @@ class PostRepository {
       await queryRunner.release();
     }
   }
+
+  async getById(postId: number): Promise<Post> {
+    const queryRunner: QueryRunner = dataSource.createQueryRunner();
+
+    await queryRunner.connect();
+
+    try {
+      const rows = await queryRunner.manager.findOne(Post, {
+        where: {
+          id: postId,
+        },
+      });
+
+      return rows;
+    } catch (error) {
+      console.log('PostRepository getById error', error);
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
+  }
+  async listByUserId(userId: number): Promise<{
+    total: number;
+    rows: Post[];
+  }> {
+    const queryRunner: QueryRunner = dataSource.createQueryRunner();
+
+    await queryRunner.connect();
+
+    try {
+      const [rows, total] = await queryRunner.manager.findAndCount(Post, {
+        where: {
+          userId: userId,
+        },
+        order: {
+          createdAt: 'DESC',
+        },
+      });
+
+      return {
+        total,
+        rows,
+      };
+    } catch (error) {
+      console.log('PostRepository getById error', error);
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
+  }
 }
 
 export default new PostRepository();
