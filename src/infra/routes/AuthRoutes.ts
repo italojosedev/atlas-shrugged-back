@@ -12,6 +12,7 @@ class UserRoutes {
   getRoutes() {
     this.router.route('/signin').post(AuthController.signIn);
     this.router.route('/signup').post(AuthController.signUp);
+    this.router.route('/refreshToken').post(AuthController.refreshToken);
 
     return this.router;
   }

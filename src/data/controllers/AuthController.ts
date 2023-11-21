@@ -38,6 +38,23 @@ class AuthController {
       });
     }
   }
+
+  async refreshToken(req: Request, res: Response): Promise<any> {
+    try {
+      console.log('AuthController refreshToken');
+      const user = req.auth;
+
+      const accessToken = await Auth.sign(user.id);
+      return res.json({
+        accessToken,
+        user,
+      });
+    } catch (err) {
+      return res.status(500).json({
+        message: err.message,
+      });
+    }
+  }
 }
 
 export default new AuthController();
